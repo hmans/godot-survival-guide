@@ -6,7 +6,7 @@
 
 _TODO: motivation_
 
-### Why don't I just package the scripts as Godot plugins and publish them to the Asset Library?
+### Why not just package the scripts as Godot plugins and publish them to the Asset Library?
 
 There are two reasons, really: first of all, in learning about these workarounds and the issues they solve, you will gain a deeper understanding of the (current) constraints and limitations of the Godot Engine (and, of course, how much you can bend them!)
 
