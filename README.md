@@ -38,7 +38,6 @@ What you _want_ is to simply have Godot import that first node as the root node 
 
 - [Godot Proposal #7157](https://github.com/godotengine/godot-proposals/discussions/7157)
 - [Godot Issue #79086](https://github.com/godotengine/godot/issues/79086)
-- [Godot Forum Threads](https://forum.godotengine.org/t/make-a-node-root-of-tree-in-the-godot-editor-from-gdscript/7823)
 
 There are probably more.
 
