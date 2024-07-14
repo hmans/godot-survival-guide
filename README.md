@@ -18,6 +18,8 @@ If you have a workaround or hack that solves a specific Godot issue, please feel
 
 **Please do** follow the structure of the existing snippets and provide a clear description of the problem that the workaround solves, the solution, and (optionally, but encouraged) some extra explanation on how it works. 
 
+Also, please only open a Pull Request against this repository if you agree to have your work shared under the CC0 license. This is to ensure that the snippets can be used by anyone, for any purpose, without any restrictions.
+
 **Please do not** submit solutions to typical gameplay (or other) programming problems (e.g. "How do I make a character jump?" or "How do I make an object face another object?"). This repository is exclusively focused on providing workarounds for things that are missing or broken in the Godot Engine.
 
 ## Importing a 3D asset (GLTF, Blender, etc.) with a single root node
