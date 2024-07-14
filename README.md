@@ -1,6 +1,6 @@
 # The Godot Engine Survival Guide
 
-### Assorted Workarounds and Dirty Hacks for the Godot Engine
+### Assorted Workarounds and Dirty Hacks for Stuff That's Missing, Broken, or Otherwise Weird in the Godot Engine
 
 ## Introduction
 
