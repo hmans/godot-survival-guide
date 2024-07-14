@@ -1,5 +1,7 @@
 # The Godot Engine Survival Guide
 
+### Assorted Workarounds and Dirty Hacks for the Godot Engine
+
 ## Importing a 3D asset (GLTF, Blender, etc.) with a single root node
 
 When you import a 3D asset into Godot, the generated "virtual" scene tree will always have a root node to group all of the imported nodes under. In 3D, by default this root node is a `Node3D` node. Godot's import settings allow you to override the type of this node.
@@ -23,26 +25,28 @@ Plop the following script into your project and make sure that your assets' impo
 extends EditorScenePostImport
 
 func _post_import(scene):
+	# If the scene has more (or fewer) than a single child node, we can't do anything,
+	# so just return the unmodified scene instead.
 	if scene.get_child_count() != 1:
 		return scene
 
-	var new_root : Node = scene.get_child(0)
-	
+	var new_root: Node = scene.get_child(0)
+
 	# Keep the original name so instances of this scene will have the
 	# imported asset's filename by default
 	new_root.name = scene.name
-	
+
 	# Recursively set the owner of the new root and all its children
 	_set_new_owner(new_root, new_root)
-	
+
 	# That's it!
 	return new_root
-	
+
 func _set_new_owner(node: Node, owner: Node):
+	# If we set a node's owner to itself, we'll get an error
 	if node != owner:
 		node.owner = owner
-		
+
 	for child in node.get_children():
 		_set_new_owner(child, owner)
-
 ```
