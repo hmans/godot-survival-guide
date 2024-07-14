@@ -18,7 +18,7 @@ Solution: Luckily, we can work around this with a few lines of GDScript. Godot a
 
 Plop the following script into your project and make sure that your assets' import settings reference it (there's an "Import Script" field in the import settings that can be weirdly easy to miss):
 
-```gd
+```gdscript
 @tool
 extends EditorScenePostImport
 
