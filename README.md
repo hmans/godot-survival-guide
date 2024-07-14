@@ -2,13 +2,37 @@
 
 ### Assorted Workarounds and Dirty Hacks for the Godot Engine
 
+## Introduction
+
+_TODO: motivation_
+
+### Why don't I just package the scripts as Godot plugins and publish them to the Asset Library?
+
+There are two reasons, really: first of all, in learning about these workarounds and the issues they solve, you will gain a deeper understanding of the (current) constraints and limitations of the Godot Engine (and, of course, how much you can bend them!)
+
+But more importantly, I would love this repository to grow into a collaborative effort. I'm not the biggest Godot expert on the planet, so it will be good to have the snippets reviewed and improved by the community. Also, I'm sure that there is a breadth of other workarounds and hacks that I haven't even thought of yet.
+
+### How and what to contribute:
+
+If you have a workaround or hack that solves a specific Godot issue, please feel free to open a PR agains this repository.
+
+**Please do** follow the structure of the existing snippets and provide a clear description of the problem that the workaround solves, the solution, and (optionally, but encouraged) some extra explanation on how it works. 
+
+**Please do not** submit solutions to typical gameplay (or other) programming problems (e.g. "How do I make a character jump?" or "How do I make an object face another object?"). This repository is exclusively focused on providing workarounds for things that are missing or broken in the Godot Engine.
+
 ## Importing a 3D asset (GLTF, Blender, etc.) with a single root node
 
 **Problem:** When you import a 3D asset into Godot, the generated "virtual" scene tree will always have a root node to group all of the imported nodes under. In 3D, by default this root node is a `Node3D` node. Godot's import settings allow you to override the type of this node.
 
-This setup works well if you're importing a large scene with many objects; you may even select individual objects to use physics (either as static or dynamic bodies). However, you may only be importing a single object, and especially if it's going to be a physics object, you will probably want to make it the root node of the generated scene tree.
+This setup works well if you're importing a large scene with many objects; you may even select individual objects to use physics (either as static or dynamic bodies).
 
-Unfortunately, Godot does not provide a way to do this. A bunch of issues, proposals, and forum threads have been opened to request this feature: 
+However, you may be importing a scene with only a _single_ root node (representing a single game asset). You might even have configured it to be imported with physics (causing Godot to create a `RigidBody3D` node for it.) Now you have a problem: even though the object is a `RigidBody3D` node, the root node of the imported scene isn't. You don't even see the `RigidBody3D` node until you select "Editable Children"!
+
+Sure, you can configure the scene's root node to be a `RigidBody3D` node, too, but now you'll have two `RigidBody3D` nodes. But you only need one!
+
+You might try to work around this using an inherited scene, but Godot won't actually let you do that, unless you sever the connection between that scene and the original asset.
+
+What you _want_ is to simply have Godot import that first node as the root node and discard the extra root node you don't need. Unfortunately, Godot does not provide a way to do this. A bunch of issues, proposals, and forum threads have been opened to request this feature: 
 
 - [Godot Proposal #7157](https://github.com/godotengine/godot-proposals/discussions/7157)
 - [Godot Issue #79086](https://github.com/godotengine/godot/issues/79086)
