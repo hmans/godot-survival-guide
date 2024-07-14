@@ -50,3 +50,5 @@ func _set_new_owner(node: Node, owner: Node):
 	for child in node.get_children():
 		_set_new_owner(child, owner)
 ```
+
+Conceptually, this is extremely simple -- the script will check if the imported scene has exactly one child node, and if so, it will return it instead of the original root node. The only complication is that we also need to fix the `owner` property of the new root node and all of its children. This is necessary because the `owner` property is used to determine which scene a node belongs to, and if it's not set correctly, the asset will not be imported correctly.
