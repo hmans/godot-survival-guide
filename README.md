@@ -50,11 +50,39 @@ Plop the following script into your project and make sure that your assets' impo
 extends EditorScenePostImport
 
 func _post_import(scene):
-	# If the scene has more (or fewer) than a single child node, we can't do anything,
-	# so just return the unmodified scene instead.
-	if scene.get_child_count() != 1:
+	# If the imported asset has only a single root node, that's the only node
+	# we're interested in:
+	if scene.get_child_count() == 1:
+		print("Imported asset only contains a single root note; discarding outer root node.")
+		return _remove_root_node(scene)
+		
+	# If the asset contains animation, Godot's importer will put them into an
+	# AnimationPlayer node. If there's only a single root object, but we also
+	# have animations, we need to handle this explicitly:
+	elif scene.get_child_count() == 2 and scene.get_child(1) is AnimationPlayer:
+		print("Imported asset contains a single root note and an AnimationPlayer; discarding outer root node.")
+		
+		# First, convert the scene using our little trick.
+		var new_scene := _remove_root_node(scene)
+		
+		# Now grab the AnimationPlayer that was generated from the asset's animations.
+		var anim_player : AnimationPlayer = scene.get_child(1)
+		
+		# The following might seem a little verbose, but we have to be this 
+		# exact in order to not trigger various Godot warnings.
+		scene.remove_child(anim_player)
+		anim_player.owner = null
+		new_scene.add_child(anim_player)
+		anim_player.owner = new_scene
+		
+		return new_scene
+		
+	# In all other cases, we will just return the scene as originally imported.
+	else:
 		return scene
 
+
+func _remove_root_node(scene: Node) -> Node:
 	var new_root: Node = scene.get_child(0)
 
 	# Keep the original name so instances of this scene will have the
@@ -66,6 +94,7 @@ func _post_import(scene):
 
 	# That's it!
 	return new_root
+	
 
 func _set_new_owner(node: Node, owner: Node):
 	# If we set a node's owner to itself, we'll get an error
@@ -77,3 +106,5 @@ func _set_new_owner(node: Node, owner: Node):
 ```
 
 **Explanation:** Conceptually, this is extremely simple -- the script will check if the imported scene has exactly one child node, and if so, it will return it instead of the original root node. The only complication is that we also need to fix the `owner` property of the new root node and all of its children. This is necessary because the `owner` property is used to determine which scene a node belongs to, and if it's not set correctly, the asset will not be imported correctly.
+
+This version of the script also handles the case where the imported asset contains animations. In this case, Godot will create an `AnimationPlayer` node as the second child of the root node. We need to move this node to the new root node, too.
